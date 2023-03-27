@@ -21,8 +21,12 @@ contract PeriodicDoubleAuctionImpl is PeriodicDoubleAuction {
      
      string public name;
      
-     constructor(string memory _name) {
+     constructor(string memory _name, 
+                 address _baseAsset, 
+                 address _quoteAsset) {
           name = _name;
+          baseAsset = _baseAsset;
+          quoteAsset = _quoteAsset;
      }
 
      function deposit(address _tokenAddress, uint256 amount) external returns(bool) {

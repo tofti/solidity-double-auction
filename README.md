@@ -9,9 +9,9 @@
 ## Steps
 
 1. install yarn;
-2. install hardhat; yarn add --dev hardhat
-3. create hardhat project; yarn hardhat
-4. yarn add --dev @openzeppelin/contracts
+2. install hardhat; `yarn add --dev hardhat`
+3. create hardhat project; `yarn hardhat`
+4. `yarn add --dev @openzeppelin/contracts`
 
 ## TODO
 
