@@ -9,15 +9,11 @@ interface PeriodicDoubleAuction {
 
     function balance(address _tokenAddress) external returns (uint256);
 
-    function placeBid(
-        uint256 baseAmount,
-        uint256 price
-    ) external returns (bool);
+    function placeBid(uint256 amount, uint256 price) external returns (bool);
 
-    function bids() external returns (uint256);
+    function numberOfBids() external view returns (uint256);
 
-    function placeAsk(
-        uint256 baseAmount,
-        uint256 price
-    ) external returns (bool);
+    function placeOffer(uint256 amount, uint256 price) external returns (bool);
+
+    function numberOfOffers() external view returns (uint256);
 }

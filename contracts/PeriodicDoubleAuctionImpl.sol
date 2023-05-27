@@ -17,7 +17,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract PeriodicDoubleAuctionImpl is PeriodicDoubleAuction {
     struct BidAsk {
-        address bidder;
+        address bidAsker;
         uint256 amount;
         uint256 price;
     }
@@ -37,6 +37,7 @@ contract PeriodicDoubleAuctionImpl is PeriodicDoubleAuction {
 
     constructor(string memory _name, address _baseAsset, address _quoteAsset) {
         name = _name;
+        // TODO validation check these are not the same asset
         baseAsset = _baseAsset;
         quoteAsset = _quoteAsset;
     }
@@ -48,7 +49,7 @@ contract PeriodicDoubleAuctionImpl is PeriodicDoubleAuction {
         // check for valid asset
         require(
             _tokenAddress == baseAsset || _tokenAddress == quoteAsset,
-            "err"
+            "Unsupported token deposited"
         );
 
         IERC20 erc20 = IERC20(_tokenAddress);
@@ -62,7 +63,7 @@ contract PeriodicDoubleAuctionImpl is PeriodicDoubleAuction {
             address(this),
             amount
         );
-        // TODO possibly add a requires here
+        // TODO possibly add a requires here on the success value
 
         _balances[msg.sender][_tokenAddress] += amount;
 
@@ -75,34 +76,46 @@ contract PeriodicDoubleAuctionImpl is PeriodicDoubleAuction {
         return _balances[msg.sender][_tokenAddress];
     }
 
-    function placeBid(
-        uint256 baseAmount,
-        uint256 price
-    ) external returns (bool) {
+    function placeBid(uint256 amount, uint256 price) external returns (bool) {
         // validation
 
         // check quote asset balance
-        uint256 quoteAssetRequired = baseAmount * price;
+        uint256 quoteAssetRequired = amount * price;
         require(
             _balances[msg.sender][quoteAsset] >= quoteAssetRequired,
             "insufficient quote asset"
         );
 
-        bids.push(BidAsk(msg.sender, baseAmount, price));
-        emit Bid(msg.sender, baseAmount, price);
+        bids.push(BidAsk(msg.sender, amount, price));
+        emit Bid(msg.sender, amount, price);
+        _balances[msg.sender][quoteAsset] -= quoteAssetRequired;
+
         return true;
     }
 
-    function bids() external returns (uint256) {
+    function numberOfBids() external view returns (uint256) {
         return bids.length;
     }
 
-    function placeAsk(
-        uint256 baseAmount,
-        uint256 price
-    ) external pure returns (bool) {
+    function placeOffer(uint256 amount, uint256 price) external returns (bool) {
+        // validation
+
         // check base asset balance
 
+        uint256 baseAssetRequired = amount * price;
+        require(
+            _balances[msg.sender][baseAsset] >= baseAssetRequired,
+            "insufficient base asset"
+        );
+
+        offers.push(BidAsk(msg.sender, amount, price));
+        emit Ask(msg.sender, amount, price);
+        _balances[msg.sender][baseAsset] -= baseAssetRequired;
+
         return true;
+    }
+
+    function numberOfOffers() external view returns (uint256) {
+        return offers.length;
     }
 }

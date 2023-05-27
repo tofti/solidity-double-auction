@@ -104,11 +104,14 @@ describe("PeriodicDoubleAuction", function () {
 
   describe("Place bids and offers", function () {
     it("should permit a bid when a wallet has a balance", async function () {
+      bidCount = await periodicAuction.connect(wallet).numberOfBids();
+      expect(bidCount).to.equal(0);
+
       // EOA will place a bid for 10 units of base amount at a price of 5
       // therefore requires 50 units of quote asset to purchase
-      const bidSize = 10;
+      const size = 10;
       const price = 5;
-      const quoteAssetAmountRequired = bidSize * price;
+      const quoteAssetAmountRequired = size * price;
       // create a wallet
       wallet = await fundNewRandomWallet();
 
@@ -124,9 +127,27 @@ describe("PeriodicDoubleAuction", function () {
       tx = await periodicAuction
         .connect(wallet)
         .deposit(quoteAssetContract.address, quoteAssetAmountRequired);
-      tx.wait();
+      await tx.wait();
 
-      await periodicAuction.connect(wallet).placeBid(bidSize, price);
+      // verify the balance of the quote asset
+      availableBalance = await periodicAuction
+        .connect(wallet)
+        .balance(quoteAssetContract.address);
+      expect(availableBalance).to.equal(quoteAssetAmountRequired);
+
+      tx = await periodicAuction.connect(wallet).placeBid(size, price);
+      txr = await tx.wait();
+      bidEvent = txr.events.find((evt) => evt.event === "Bid");
+      expect(bidEvent.args).to.deep.equal([wallet.address, size, price]);
+
+      bidCount = await periodicAuction.connect(wallet).numberOfBids();
+      expect(bidCount).to.equal(1);
+
+      // verify the balance of the quote asset is now zero
+      availableBalance = await periodicAuction
+        .connect(wallet)
+        .balance(quoteAssetContract.address);
+      expect(availableBalance).to.equal(0);
     });
   });
 });
