@@ -4,9 +4,17 @@ require("@nomicfoundation/hardhat-toolbox");
 /** @type import('hardhat/config').HardhatUserConfig */
 
 module.exports = {
+  networks: {
+    hardhat: {
+      /*mining: {
+        auto: false,
+        interval: 50
+      }*/
+    }
+  },
+
   solidity: {
     // other solidity settings...
-
     // add the following settings for solhint
     compilers: [
       {
@@ -22,33 +30,33 @@ module.exports = {
 
   },
 
-    // configure the solhint plugin
-    solhint: {
-      "max-line-length": ["error", 120],
-      "no-unused-vars": "error",
-      "no-empty-blocks": "error",
-      "no-multi-spaces": "error",
-      "no-trailing-spaces": "error",
-      "space-before-function-paren": ["error", "never"],
-      "keyword-spacing": "error",
-      "brace-style": ["error", "1tbs"],
-      "eqeqeq": ["error", "always", { "null": "ignore" }],
-      "camelcase": ["error", { "properties": "never" }],
-      "func-names": "off",
-      "prefer-arrow-callback": "error",
-      "no-inner-declarations": "off",
-      "no-var": "error",
-      "object-shorthand": "error",
-      "quotes": ["error", "single"],
-      "semi": ["error", "always"],
-      "strict": "off",
-      "yul-no-unused-vars": "error",
-      "no-unreachable": "error",
-      "no-mixed-spaces-and-tabs": ["error", "smart-tabs"],
-      "no-trailing-spaces": "error",
-      "no-multiple-empty-lines": ["error", { "max": 1, "maxEOF": 0 }],
-      "no-extra-semi": "error",
-      "eol-last": ["error", "always"],
-    },
+  // configure the solhint plugin
+  solhint: {
+    "max-line-length": ["error", 120],
+    "no-unused-vars": "error",
+    "no-empty-blocks": "error",
+    "no-multi-spaces": "error",
+    "no-trailing-spaces": "error",
+    "space-before-function-paren": ["error", "never"],
+    "keyword-spacing": "error",
+    "brace-style": ["error", "1tbs"],
+    "eqeqeq": ["error", "always", { "null": "ignore" }],
+    "camelcase": ["error", { "properties": "never" }],
+    "func-names": "off",
+    "prefer-arrow-callback": "error",
+    "no-inner-declarations": "off",
+    "no-var": "error",
+    "object-shorthand": "error",
+    "quotes": ["error", "single"],
+    "semi": ["error", "always"],
+    "strict": "off",
+    "yul-no-unused-vars": "error",
+    "no-unreachable": "error",
+    "no-mixed-spaces-and-tabs": ["error", "smart-tabs"],
+    "no-trailing-spaces": "error",
+    "no-multiple-empty-lines": ["error", { "max": 1, "maxEOF": 0 }],
+    "no-extra-semi": "error",
+    "eol-last": ["error", "always"],
+  },
 
 };
