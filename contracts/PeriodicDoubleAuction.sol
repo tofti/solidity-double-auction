@@ -16,4 +16,6 @@ interface PeriodicDoubleAuction {
     function placeOffer(uint256 amount, uint256 price) external returns (bool);
 
     function numberOfOffers() external view returns (uint256);
+
+    function auctionClose() external;
 }

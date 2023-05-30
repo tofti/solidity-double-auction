@@ -6,13 +6,9 @@ import "./PeriodicDoubleAuction.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 /*
-- base asset;
-- quote asset;
-- bids / offers (price, size);
-- auction ending time;
-
 - questions?
 - can you place multiple bids? and offers?
+- can you withdraw a bid/offer?
 */
 
 contract PeriodicDoubleAuctionImpl is PeriodicDoubleAuction {
@@ -77,7 +73,7 @@ contract PeriodicDoubleAuctionImpl is PeriodicDoubleAuction {
     }
 
     function placeBid(uint256 amount, uint256 price) external returns (bool) {
-        // validation
+        // TODO validation
 
         // check quote asset balance
         uint256 quoteAssetRequired = amount * price;
@@ -98,10 +94,9 @@ contract PeriodicDoubleAuctionImpl is PeriodicDoubleAuction {
     }
 
     function placeOffer(uint256 amount, uint256 price) external returns (bool) {
-        // validation
+        // TODO validation
 
         // check base asset balance
-
         uint256 baseAssetRequired = amount * price;
         require(
             _balances[msg.sender][baseAsset] >= baseAssetRequired,
