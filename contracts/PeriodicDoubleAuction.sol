@@ -18,4 +18,6 @@ interface PeriodicDoubleAuction {
     function numberOfOffers() external view returns (uint256);
 
     function auctionClose() external;
+
+    function withdraw(address _tokenAddress, uint256 _amount) external returns (bool);
 }
